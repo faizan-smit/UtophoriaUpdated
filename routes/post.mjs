@@ -365,8 +365,8 @@ router.get('/getPosts', async(req, res) => {
             let results = await cursor.toArray()
             console.log("Results: ", results);
             res.status(200).send(results);
-            await mongoClient.close();
-            console.log(disconnectMessage);
+            // await mongoClient.close();
+            // console.log(disconnectMessage);
 
     }
     catch(error){
