@@ -5,7 +5,7 @@ export const GlobalContext = createContext('Initial Value');
 
 let data = {
   user: {},
-  isLogin: false,
+  isLogin: null,
   splashScreen: true,
   name: "Faizan Alam",
   darkTheme: true

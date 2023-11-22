@@ -38,6 +38,9 @@ let App= ()=> {
   
       }catch(e){
   
+        dispatch({
+          type: "USER_LOGOUT",
+        })
         console.log("User not Logged In");
   
       }

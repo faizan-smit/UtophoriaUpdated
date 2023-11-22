@@ -405,7 +405,10 @@ router.get('/userSpecificPost/:username', async(req, res) => {
 
             await mongoClient.connect();
             console.log(connectMessage);
+            // let findUser = await userCollection.findOne({ username: req.params.username });
+            // console.log("FindUser: ",findUser);
             const cursor = postCollection.find({authorUserName: req.params.username}).sort({ _id: -1 });
+            // console.log("Cursor:", cursor);
             let results = await cursor.toArray()
             console.log("Results: ", results);
             res.status(200).send(results);

@@ -34,15 +34,16 @@ let Profile = ()=>{
 
             const profileResponse = await api.get(`/api/v1/userProfile/${username}`);
             console.log(profileResponse.data)
-            if(profileResponse.data.data){
+            
               setProfileName(profileResponse.data.data.firstName + " " + profileResponse.data.data.lastName);
-            } else{
-              setProfileName('User Does Not Exist')
-            }
+            
+           
 
           } catch(profileErr){
 
             console.log(profileErr);
+            setProfileName('User Does Not Exist')
+
 
           }
           

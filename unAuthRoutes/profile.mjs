@@ -57,6 +57,7 @@ router.get('/userProfile/:userName', async(req, res)=>{
 
             res.status(403).send({
                 message: "user does not exist",
+                userFound: false,
             });
 
             return;
@@ -67,6 +68,7 @@ router.get('/userProfile/:userName', async(req, res)=>{
 
                         res.status(200).send({
                             message: "User Profile Fetched Successfully",
+                            userFound: true,
                             data: {
                                 isAdmin: findUser.isAdmin,
                                 firstName: findUser.firstName,

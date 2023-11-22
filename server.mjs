@@ -103,10 +103,11 @@ app.use('/api/v1', interactionRouter);
 ////////////////////////////////////////////////////////////////
 
 app.use(myWebServer);
+app.use("*", myWebServer);
 // app.use('*', (req, res) => {
 //     res.sendFile(path.join(__dirname, '/web/build', 'index.html'));
 //   });
-app.use("*", myWebServer)
+
 
 
 
