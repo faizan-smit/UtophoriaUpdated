@@ -1,0 +1,104 @@
+.form-css{
+
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5), 0.5px 0.5px 0.1px rgba(0,0,0,0.1);
+    width: fit-content;
+    margin: 10px auto;
+    padding: 1rem;
+    margin-bottom: 30px;
+    width: 400px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 400px !important;
+    margin: 30px auto;
+    background-color: black;
+    border-radius: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+
+.form-css input{
+
+    margin: 20px auto;
+    width: 80%;
+    height: 30px;
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid white;
+    outline: none;
+
+}
+
+.form-css textarea{
+
+    margin: 20px auto;
+    width: 80%;
+    /* height: 30px; */
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid white;
+    outline: none;
+    
+}
+
+.form-css .header{
+    
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    margin: 10px 0px;
+    color: white;
+
+
+}
+
+.form-css button{
+
+    width: 88%;
+    margin: 10px auto;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 10px 20px;
+
+}
+
+.form-css button:hover{
+
+    background-color: rgb(30, 30, 32);
+    color: white;
+    border: 1px solid white;
+
+}
+
+input::file-selector-button {
+    font-weight: bold;
+    color: black;
+    padding: 0.5em 1em;
+    border: 1px solid white;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+  }
+
+.fileLabel{
+
+    color: white;
+
+}

@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+}
+
+h1{
+    text-align: center;
+}
+
+.userprofile--name{
+    font-size: 3rem;
+}
