@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
+import io from 'socket.io-client';
 import './App.css';
 import { GlobalContext } from './context/context';
 import Navbar from './components/navbar/navbar';
@@ -10,7 +11,7 @@ import Login from './components/pages/login/login';
 import Chat from './components/pages/chat/chat';
 import api from './axios';
 import logoImage from './logo.svg'
-
+import { baseUrl } from './core.mjs';
 
 
 let App= ()=> {
@@ -19,6 +20,25 @@ let App= ()=> {
   let { state, dispatch } = useContext(GlobalContext);
 
   
+  useEffect(()=> {
+
+      const socket = io(baseUrl, {
+        secure: true,
+        withCredentials: true,
+      });
+
+      socket.on('connect', ()=>{
+        console.log("Socket Connected in App.jsx");
+      });
+
+      socket.on('disconnect', (message)=>{
+
+        console.log("Socket Disconnected in App.jsx: ", message);
+
+      })
+
+  }, []);
+
 
   useEffect(()=>{
     let checkLoginStatus = async()=> {
@@ -75,7 +95,7 @@ let App= ()=> {
     {   (state?.isLogin === true)? (<>
         <Routes>
               <Route path='/users/:username' element={<Profile />} />
-              <Route path='/chat' element={<Chat />} />
+              <Route path='/chat/:chattingWith' element={<Chat />} />
               <Route path='/' element={<Home />} />
               <Route path='*' element={<Navigate to='/' replace={true} />} />
 

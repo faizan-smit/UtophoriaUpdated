@@ -4,15 +4,31 @@ import path from 'path';
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
 import 'dotenv/config'
+import { Server as socketIo } from 'socket.io';
+import cookie from 'cookie';
 import authRouter from './routes/auth.mjs';
 import postRouter from './routes/post.mjs';
 import userProfileRouter from './unAuthRoutes/profile.mjs'
 import interactionRouter from './routes/interactions.mjs';
+import messageRouter from './routes/chat.mjs';
+import { create } from 'domain';
+import { createServer } from 'http';
+import { globalObject, socketUsers } from './core.mjs';
 
 ////////////////////////////////////////////////////////////////
+/* STATES */
 ////////////////////////////////////////////////////////////////
 
 const app = express();
+const server = createServer(app)
+const io = new socketIo(server, {
+    cors: {
+        origin: ["*", "http://localhost:3000"],
+        methods: "*",
+        credentials: true,
+    }
+})
+
 const corsOptions = {
 
     origin: 'http://localhost:3000',
@@ -62,7 +78,7 @@ app.use('/api/v1' ,(req, res, next)=>{
         const decoded = jwt.verify(authenticationtoken, process.env.SECRET);
         console.log("decoded: ", decoded);
 
-        req.body.decoded =  {
+        req.decodedCookie =  {
             isAdmin: decoded.isAdmin,
             firstName: decoded.firstName,
             lastName: decoded.lastName,
@@ -89,17 +105,18 @@ app.use('/api/v1' ,(req, res, next)=>{
 app.use('/api/v1/authStatus',(req, res) => {
     res.status(200).send({
         message: "logged in",
-        data: req.body.decoded,
+        data: req.decodedCookie,
     });
 
 });
 
 app.use('/api/v1', postRouter);
 app.use('/api/v1', interactionRouter);
+app.use('/api/v1', messageRouter);
 
 
 ////////////////////////////////////////////////////////////////
-/* WEB Server */
+/* WEB Server Serving Site */
 ////////////////////////////////////////////////////////////////
 
 app.use(myWebServer);
@@ -110,6 +127,42 @@ app.use("*", myWebServer);
 
 
 
+////////////////////////////////////////////////////////////////
+/* SOCKET IO */
+////////////////////////////////////////////////////////////////
+
+globalObject.io = io;
+
+io.use((socket, next)=>{
+
+    console.log("Socket-Middleware Started");
+    const parsedCookies = cookie.parse(socket.request.headers.cookie || "");
+    console.log("parsedCookies: ", parsedCookies);
+
+    try{
+        const decoded = jwt.verify(parsedCookies.authenticationtoken, process.env.SECRET);
+        console.log("decoded: ", decoded);
+        socketUsers[decoded.username] = socket;
+        socket.on("disconnect", (reason, desc)=>{
+            console.log("Socket Disconnected: ", reason, "desc: ", desc);
+
+        });
+        next();
+
+    
+    }catch(err){
+        console.log("Invalid Token");
+        return next(new Error("Invalid Token"));
+        return;
+    
+    }
+
+});
+
+
+io.on("connection", (socket)=>{
+    console.log("New user connected with id: ", socket.id);
+}); 
 
 
 ////////////////////////////////////////////////////////////////
@@ -117,7 +170,7 @@ app.use("*", myWebServer);
 ////////////////////////////////////////////////////////////////
 
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 
     console.log('Server Listening on port: *' + PORT + "* \nServer Started @ " + (new Date()).toLocaleString());
 

@@ -209,12 +209,7 @@ const bucket = admin.storage().bucket("gs://utophoria-multer.appspot.com");
 ////////////////////////////////////////////////////////////////
 
 
-router.post('/post',
-    (req, res, next) => {
-        req.decoded = { ...req.body.decoded }
-        next();
-    },
-    upload.any(),
+router.post('/post', upload.any(),
 
     async (req, res, next) => { 
         console.log("req.body: ", req.body);

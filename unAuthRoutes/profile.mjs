@@ -55,8 +55,8 @@ router.get('/userProfile/:userName', async(req, res)=>{
 
         if(!findUser){
 
-            res.status(403).send({
-                message: "user does not exist",
+            res.status(404).send({
+                message: "User does not exist",
                 userFound: false,
             });
 
@@ -79,7 +79,7 @@ router.get('/userProfile/:userName', async(req, res)=>{
                             }
                         });
 
-                        await mongoClient.close();
+                        // await mongoClient.close();
                         return;
                 
                 
@@ -87,8 +87,8 @@ router.get('/userProfile/:userName', async(req, res)=>{
                 
                 }else{
 
-                    res.status(401).send({
-                        message: "Email or password incorrect",
+                    res.status(500).send({
+                        message: "Internal Server Error",
                     })
                     await mongoClient.close();
                     console.log(disconnectMessage);
